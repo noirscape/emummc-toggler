@@ -61,7 +61,7 @@ std::string printAndReturnEmuMMCstatus()
     ini.LoadFile(EMUMMCINI);
 
     std::string emummc_value = ini.GetValue("emummc", "emummc_enabled", UFUCKEDUP);
-    std::cout << "EmuNAND status: " << getStatusVar(emummc_value) << "\n\n\n";
+    std::cout << "emuMMC status: " << getStatusVar(emummc_value) << "\n\n\n";
     return emummc_value;
 }
 
@@ -88,7 +88,7 @@ std::string printMainContent()
 
     // Print tip message
     if (emuMMCStatus != UFUCKEDUP)
-        std::cout << "Press - to toggle emuNAND status.\n";
+        std::cout << "Press - to toggle emuMMC status.\n";
     std::cout << "Press + to exit.\n";
 
     return emuMMCStatus;
