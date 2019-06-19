@@ -41,6 +41,7 @@
 
 // defines
 #define EMUMMCINI "sdmc:/emummc/emummc.ini"
+#define UFUCKEDUP "something is wrong"
 
 std::string getStatusVar(std::string emummc_value)
 {
@@ -49,7 +50,7 @@ std::string getStatusVar(std::string emummc_value)
     else if (emummc_value == "1")
         return "Active.";
     else
-        return "Something went wrong or your emummc_enabled value is incorrect. Fix this manually before using emunand-toggle.";
+        return "Something went wrong or your emummc_enabled value is incorrect. Fix this manually before using emuMMC-Toggle.";
 }
 
 // Returns a pair containing a status var and the ini object.
@@ -59,7 +60,7 @@ std::string printAndReturnEmuMMCstatus()
     ini.SetUnicode();
     ini.LoadFile(EMUMMCINI);
 
-    std::string emummc_value = ini.GetValue("emummc", "emummc_enabled", "something is wrong");
+    std::string emummc_value = ini.GetValue("emummc", "emummc_enabled", UFUCKEDUP);
     std::cout << "EmuNAND status: " << getStatusVar(emummc_value) << "\n\n\n";
     return emummc_value;
 }
@@ -81,12 +82,14 @@ std::string printMainContent()
 {
     consoleClear();
     // Show welcome message
-    std::cout << "Welcome to emuMMC-Toggle v1.0.0.\n\n(c) Valentijn \"noirscape\" V.\n\n";
+    std::cout << "Welcome to emuMMC-Toggle v1.1.0.\n\n(c) Valentijn \"noirscape\" V.\n\n";
 
     std::string emuMMCStatus = printAndReturnEmuMMCstatus();
 
     // Print tip message
-    std::cout << "Press - to toggle emuNAND status.\nPress + to exit.";
+    if (emuMMCStatus != UFUCKEDUP)
+        std::cout << "Press - to toggle emuNAND status.\n";
+    std::cout << "Press + to exit.\n";
 
     return emuMMCStatus;
 }
@@ -116,8 +119,10 @@ int main(int argc, char* argv[])
             break; // break in order to return to hbmenu
 
         if (kDown & KEY_MINUS) {
-            toggleEmuMMCVar(emuMMCStatus);
-            emuMMCStatus = printMainContent();
+            if (emuMMCStatus != UFUCKEDUP) {
+                toggleEmuMMCVar(emuMMCStatus);
+                emuMMCStatus = printMainContent();
+            }
         }
         // Your code goes here
 
