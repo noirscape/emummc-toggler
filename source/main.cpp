@@ -60,7 +60,7 @@ std::string printAndReturnEmuMMCstatus()
     ini.SetUnicode();
     ini.LoadFile(EMUMMCINI);
 
-    std::string emummc_value = ini.GetValue("emummc", "emummc_enabled", UFUCKEDUP);
+    std::string emummc_value = ini.GetValue("emummc", "enabled", UFUCKEDUP);
     std::cout << "emuMMC status: " << getStatusVar(emummc_value) << "\n\n\n";
     return emummc_value;
 }
@@ -72,9 +72,9 @@ void toggleEmuMMCVar(std::string emuMMCStatus)
     ini.LoadFile(EMUMMCINI);
 
     if (emuMMCStatus == "0")
-        ini.SetValue("emummc", "emummc_enabled", "1");
+        ini.SetValue("emummc", "enabled", "1");
     if (emuMMCStatus == "1")
-        ini.SetValue("emummc", "emummc_enabled", "0");
+        ini.SetValue("emummc", "enabled", "0");
     ini.SaveFile(EMUMMCINI);
 }
 
@@ -82,7 +82,7 @@ std::string printMainContent()
 {
     consoleClear();
     // Show welcome message
-    std::cout << "Welcome to emuMMC-Toggle v1.1.0.\n\n(c) Valentijn \"noirscape\" V.\n\n";
+    std::cout << "Welcome to emuMMC-Toggle v1.1.1.\n\n(c) Valentijn \"noirscape\" V.\n\n";
 
     std::string emuMMCStatus = printAndReturnEmuMMCstatus();
 
