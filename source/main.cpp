@@ -75,7 +75,7 @@ void toggleEmuMMCVar(std::string emuMMCStatus)
         ini.SetValue("emummc", "enabled", "1");
     if (emuMMCStatus == "1")
         ini.SetValue("emummc", "enabled", "0");
-    ini.SaveFile(EMUMMCINI);
+    ini.SaveFile(EMUMMCINI, false);
 }
 
 std::string printMainContent()
