@@ -97,6 +97,15 @@ std::string printMainContent()
 // Main program entrypoint
 int main(int argc, char* argv[])
 {
+    consoleInit(NULL);
+
+    // Configure our supported input layout: a single player with standard controller styles
+    padConfigureInput(1, HidNpadStyleSet_NpadStandard);
+
+    // Initialize the default gamepad (which reads handheld mode inputs as well as the first connected controller)
+    PadState pad;
+    padInitializeDefault(&pad);
+
     // This example uses a text console, as a simple way to output text to the screen.
     // If you want to write a software-rendered graphics application,
     //   take a look at the graphics/simplegfx example, which uses the libnx Framebuffer API instead.
@@ -108,17 +117,16 @@ int main(int argc, char* argv[])
     // Main loop
     while (appletMainLoop())
     {
-        // Scan all the inputs. This should be done once for each frame
-        hidScanInput();
+        // Scan the gamepad. This should be done once for each frame
+        padUpdate(&pad);
 
-        // hidKeysDown returns information about which buttons have been
-        // just pressed in this frame compared to the previous one
-        u64 kDown = hidKeysDown(CONTROLLER_P1_AUTO);
+        // padGetButtonsDown returns the set of buttons that have been newly pressed in this frame compared to the previous one
+        u64 kDown = padGetButtonsDown(&pad);
 
-        if (kDown & KEY_PLUS)
+        if (kDown & HidNpadButton_Plus)
             break; // break in order to return to hbmenu
 
-        if (kDown & KEY_MINUS) {
+        if (kDown & HidNpadButton_Minus) {
             if (emuMMCStatus != UFUCKEDUP) {
                 toggleEmuMMCVar(emuMMCStatus);
                 emuMMCStatus = printMainContent();
